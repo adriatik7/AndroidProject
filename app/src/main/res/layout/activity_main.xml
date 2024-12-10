@@ -1,17 +1,96 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple">
+    android:background="#1A1A1A">
 
-    <!-- App Logo -->
+    <!-- Center Circle (Total Spent) -->
+    <TextView
+        android:id="@+id/totalSpent"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:text="£4,901.14"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:background="@drawable/circle_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Category Icons -->
     <ImageView
-        android:id="@+id/logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:contentDescription="App Logo"
-        android:src="@drawable/ic_launcher_foreground"
-        tools:layout_editor_absoluteX="130dp"
-        tools:layout_editor_absoluteY="290dp" />
+        android:id="@+id/category1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/healthy_drink"
+        app:layout_constraintCircle="@id/totalSpent"
+        app:layout_constraintCircleAngle="0"
+        app:layout_constraintCircleRadius="150dp" />
+
+    <ImageView
+        android:id="@+id/category2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/transportation"
+        app:layout_constraintCircle="@id/totalSpent"
+        app:layout_constraintCircleAngle="45"
+        app:layout_constraintCircleRadius="150dp" />
+
+    <ImageView
+        android:id="@+id/category3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/shopping"
+        app:layout_constraintCircle="@id/totalSpent"
+        app:layout_constraintCircleAngle="90"
+        app:layout_constraintCircleRadius="150dp" />
+
+    <ImageView
+        android:id="@+id/category4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/cardiogram"
+        app:layout_constraintCircle="@id/totalSpent"
+        app:layout_constraintCircleAngle="135"
+        app:layout_constraintCircleRadius="150dp" />
+
+    <ImageView
+        android:id="@+id/category5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/bill"
+        app:layout_constraintCircle="@id/totalSpent"
+        app:layout_constraintCircleAngle="180"
+        app:layout_constraintCircleRadius="150dp" />
+
+    <ImageView
+        android:id="@+id/category6"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/entertainment"
+        app:layout_constraintCircle="@id/totalSpent"
+        app:layout_constraintCircleAngle="225"
+        app:layout_constraintCircleRadius="150dp" />
+
+    <ImageView
+        android:id="@+id/category7"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/savings"
+        app:layout_constraintCircle="@id/totalSpent"
+        app:layout_constraintCircleAngle="270"
+        app:layout_constraintCircleRadius="150dp" />
+
+    <ImageView
+        android:id="@+id/category8"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/application"
+        app:layout_constraintCircle="@id/totalSpent"
+        app:layout_constraintCircleAngle="315"
+        app:layout_constraintCircleRadius="150dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

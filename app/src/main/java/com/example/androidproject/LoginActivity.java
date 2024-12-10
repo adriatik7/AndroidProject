@@ -1,6 +1,5 @@
 package com.example.androidproject;
 
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,11 +32,15 @@ public class LoginActivity extends AppCompatActivity {
             if (user.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
+                // If login is successful, show a Toast and open MainActivity
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();  // Close the current LoginActivity
             }
         });
 
-
+        // Setup "Sign up" text with color
         String fullText = "Don't have an account? Sign up";
         SpannableString spannableString = new SpannableString(fullText);
         int startIndex = fullText.indexOf("Sign up");
