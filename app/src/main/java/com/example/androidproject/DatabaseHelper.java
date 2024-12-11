@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SpendTracker.db";
@@ -81,6 +82,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+
+    public boolean isUsernameExists(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM users WHERE username = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return exists;
+    }
+
+    public boolean isEmailExists(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM users WHERE email = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return exists;
+    }
+
+
 
 
 

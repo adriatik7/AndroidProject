@@ -76,19 +76,31 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
+        if (!isValidPassword(password)) {
+            Toast.makeText(this, "Password must contain at least one number and one special character.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (dbHelper.isUsernameExists(username)) {
+            Toast.makeText(this, "Username already exists. Please choose another.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (dbHelper.isEmailExists(email)) {
+            Toast.makeText(this, "Email already exists. Please use another.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Save user in database
         boolean isInserted = dbHelper.addUser(fullName, email, username, password);
 
         if (isInserted) {
-            Toast.makeText(this, "User added successfully!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Failed to add user.", Toast.LENGTH_SHORT).show();
-        }
-
-
-        if (isInserted) {
             Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show();
-            // Navigate to LoginActivity
             Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -96,4 +108,28 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this, "Sign-Up Failed. Try again!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    // Helper method to validate password
+    private boolean isValidPassword(String password) {
+        boolean hasNumber = false;
+        boolean hasSpecialChar = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isDigit(c)) {
+                hasNumber = true;
+            } else if (!Character.isLetterOrDigit(c)) {
+                hasSpecialChar = true;
+            }
+            if (hasNumber && hasSpecialChar) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Helper method to validate email
+    private boolean isValidEmail(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
 }
