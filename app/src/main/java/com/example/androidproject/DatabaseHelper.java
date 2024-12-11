@@ -6,7 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -65,10 +66,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addUser(String fullName, String email, String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+
+        // Hash the password
+        String hashedPassword = hashPassword(password);
+
         values.put(COLUMN_FULL_NAME, fullName);
         values.put(COLUMN_EMAIL, email);
         values.put(COLUMN_USERNAME, username);
-        values.put(COLUMN_PASSWORD, password);
+        values.put(COLUMN_PASSWORD, hashedPassword);
 
         try {
             long result = db.insert(TABLE_USERS, null, values);
@@ -80,6 +85,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.e("DatabaseHelper", "Error inserting user: " + e.getMessage());
             return false;
+        }
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b)); // Convert bytes to hex
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null; // In case of an error
         }
     }
 
@@ -110,16 +130,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Authenticate user
     public boolean authenticateUser(String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query to fetch the stored hashed password for the username
         Cursor cursor = db.query(TABLE_USERS,
-                new String[]{COLUMN_USER_ID},
-                COLUMN_USERNAME + "=? AND " + COLUMN_PASSWORD + "=?",
-                new String[]{username, password},
+                new String[]{COLUMN_PASSWORD},
+                COLUMN_USERNAME + "=?",
+                new String[]{username},
                 null, null, null);
 
-        boolean isAuthenticated = cursor.getCount() > 0;
+        if (cursor.moveToFirst()) {
+            // Get the stored hashed password
+            String storedHashedPassword = cursor.getString(0);
+
+            // Hash the entered password
+            String enteredHashedPassword = hashPassword(password);
+
+            cursor.close();
+
+            // Compare the stored hash with the hash of the entered password
+            return storedHashedPassword.equals(enteredHashedPassword);
+        }
+
         cursor.close();
-        return isAuthenticated;
+        return false; // Authentication failed
     }
+
 
     // Add an item
     public long addItem(String itemName, double price, String category) {
