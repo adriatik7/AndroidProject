@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.DatabaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,8 +34,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
         footerText = findViewById(R.id.footerText);
-       // signUpLink = findViewById(R.id.signUpLink);
-         progressBar = findViewById(R.id.progressBar);
+        // signUpLink = findViewById(R.id.signUpLink);
+        progressBar = findViewById(R.id.progressBar);
 
         // Initialize database helper
         dbHelper = new DatabaseHelper(this);

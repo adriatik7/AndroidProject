@@ -1,6 +1,6 @@
 package com.example.androidproject;
 
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androidproject.DatabaseHelper;
 import com.example.androidproject.model.Item;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
 public class CategoryActivity extends AppCompatActivity {
     private List<Item> items;
     private ItemAdapter adapter;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,7 @@ public class CategoryActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Finish the current activity and return to MainActivity
-                finish();
+                finish(); // Finish the current activity and return to MainActivity
             }
         });
 
@@ -48,9 +49,11 @@ public class CategoryActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.itemsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        dbHelper = new DatabaseHelper(this);
         items = new ArrayList<>();
-        items.add(new Item("Example Item 1", 10.99));
-        items.add(new Item("Example Item 2", 5.49));
+
+        // Load items from the database
+        loadItemsFromDatabase(categoryName);
 
         adapter = new ItemAdapter(items);
         recyclerView.setAdapter(adapter);
@@ -64,13 +67,19 @@ public class CategoryActivity extends AppCompatActivity {
                 if (!productName.isEmpty() && !productPriceText.isEmpty()) {
                     try {
                         double productPrice = Double.parseDouble(productPriceText);
-                        items.add(new Item(productName, productPrice));
-                        adapter.notifyDataSetChanged();
+                        long result = dbHelper.addItem(productName, productPrice, categoryName);
 
-                        productNameInput.setText("");
-                        productPriceInput.setText("");
+                        if (result != -1) {
+                            items.add(new Item(productName, productPrice));
+                            adapter.notifyDataSetChanged();
 
-                        Toast.makeText(CategoryActivity.this, "Item added!", Toast.LENGTH_SHORT).show();
+                            productNameInput.setText("");
+                            productPriceInput.setText("");
+
+                            Toast.makeText(CategoryActivity.this, "Item added!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CategoryActivity.this, "Failed to save item.", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (NumberFormatException e) {
                         Toast.makeText(CategoryActivity.this, "Invalid price format", Toast.LENGTH_SHORT).show();
                     }
@@ -79,5 +88,17 @@ public class CategoryActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void loadItemsFromDatabase(String categoryName) {
+        Cursor cursor = dbHelper.getItemsByCategory(categoryName);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String itemName = cursor.getString(cursor.getColumnIndexOrThrow("item_name"));
+                double itemPrice = cursor.getDouble(cursor.getColumnIndexOrThrow("item_price"));
+                items.add(new Item(itemName, itemPrice));
+            }
+            cursor.close();
+        }
     }
 }
