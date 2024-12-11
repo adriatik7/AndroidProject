@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,9 +55,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     private void handleSignUp() {
         String fullName = fullNameField.getText().toString().trim();
         String email = emailField.getText().toString().trim();
@@ -96,17 +92,14 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        // Save user in database
-        boolean isInserted = dbHelper.addUser(fullName, email, username, password);
-
-        if (isInserted) {
-            Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, "Sign-Up Failed. Try again!", Toast.LENGTH_SHORT).show();
-        }
+        // Proceed to OTP verification
+        Intent intent = new Intent(SignUpActivity.this, VerifyOTPActivity.class);
+        intent.putExtra("fullName", fullName);
+        intent.putExtra("email", email);
+        intent.putExtra("username", username);
+        intent.putExtra("password", password);
+        startActivity(intent);
+        finish();
     }
 
     // Helper method to validate password
@@ -131,5 +124,4 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-
 }
