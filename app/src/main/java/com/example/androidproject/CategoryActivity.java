@@ -1,5 +1,6 @@
 package com.example.androidproject;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +30,7 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        // Retrieve userId from Intent
+
         int userId = getIntent().getIntExtra("user_id", -1);
         if (userId == -1) {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
@@ -37,7 +38,7 @@ public class CategoryActivity extends AppCompatActivity {
             return;
         }
 
-        // Existing code...
+
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,10 +76,10 @@ public class CategoryActivity extends AppCompatActivity {
                 if (!productName.isEmpty() && !productPriceText.isEmpty()) {
                     try {
                         double productPrice = Double.parseDouble(productPriceText);
-                        long result = dbHelper.addItem(productName, productPrice, categoryName, userId); // Pass userId
+                        long result = dbHelper.addItem(productName, productPrice, categoryName, userId);
 
                         if (result != -1) {
-                            items.add(new Item(productName, productPrice, userId)); // Update to use the updated Item model
+                            items.add(new Item(productName, productPrice, userId));
                             adapter.notifyDataSetChanged();
 
                             productNameInput.setText("");
@@ -86,16 +87,18 @@ public class CategoryActivity extends AppCompatActivity {
 
                             Toast.makeText(CategoryActivity.this, "Item added!", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(CategoryActivity.this, "Failed to save item.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CategoryActivity.this, "Error adding item.", Toast.LENGTH_SHORT).show();
                         }
                     } catch (NumberFormatException e) {
-                        Toast.makeText(CategoryActivity.this, "Invalid price format", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CategoryActivity.this, "Invalid price format.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(CategoryActivity.this, "Please enter both name and price", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CategoryActivity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
     }
 
 

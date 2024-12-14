@@ -208,6 +208,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
+    public double getTotalSpent(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        double totalSpent = 0;
+
+        String query = "SELECT SUM(" + COLUMN_ITEM_PRICE + ") AS total FROM " + TABLE_ITEMS +
+                " WHERE user_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+
+        if (cursor.moveToFirst()) {
+            totalSpent = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+        }
+        cursor.close();
+        return totalSpent;
+    }
+
+
 
 
 }

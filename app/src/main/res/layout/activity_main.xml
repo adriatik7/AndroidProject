@@ -11,7 +11,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:gravity="center"
-        android:text="£4,901.14"
+        android:text="0.00 €"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:background="@drawable/circle_background"

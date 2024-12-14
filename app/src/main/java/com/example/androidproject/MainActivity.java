@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
+import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -12,6 +14,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         int userId = getIntent().getIntExtra("user_id", -1);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        double totalSpentValue = dbHelper.getTotalSpent(userId);
+
+        TextView totalSpentTextView = findViewById(R.id.totalSpent);
+        totalSpentTextView.setText(String.format("%.2f €", totalSpentValue));
+
 
 
 
@@ -34,4 +43,16 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int userId = getIntent().getIntExtra("user_id", -1);
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        double totalSpentValue = dbHelper.getTotalSpent(userId);
+
+        TextView totalSpentTextView = findViewById(R.id.totalSpent);
+        totalSpentTextView.setText(String.format("%.2f euro", totalSpentValue));
+    }
+
 }
