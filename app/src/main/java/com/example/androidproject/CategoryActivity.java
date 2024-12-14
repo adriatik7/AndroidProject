@@ -29,12 +29,20 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        // Back Button
+        // Retrieve userId from Intent
+        int userId = getIntent().getIntExtra("user_id", -1);
+        if (userId == -1) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Existing code...
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Finish the current activity and return to MainActivity
+                finish();
             }
         });
 
@@ -52,8 +60,8 @@ public class CategoryActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         items = new ArrayList<>();
 
-        // Load items from the database
-        loadItemsFromDatabase(categoryName);
+
+        loadItemsFromDatabase(categoryName, userId);
 
         adapter = new ItemAdapter(items);
         recyclerView.setAdapter(adapter);
@@ -67,10 +75,10 @@ public class CategoryActivity extends AppCompatActivity {
                 if (!productName.isEmpty() && !productPriceText.isEmpty()) {
                     try {
                         double productPrice = Double.parseDouble(productPriceText);
-                        long result = dbHelper.addItem(productName, productPrice, categoryName);
+                        long result = dbHelper.addItem(productName, productPrice, categoryName, userId); // Pass userId
 
                         if (result != -1) {
-                            items.add(new Item(productName, productPrice));
+                            items.add(new Item(productName, productPrice, userId)); // Update to use the updated Item model
                             adapter.notifyDataSetChanged();
 
                             productNameInput.setText("");
@@ -90,15 +98,17 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    private void loadItemsFromDatabase(String categoryName) {
-        Cursor cursor = dbHelper.getItemsByCategory(categoryName);
+
+    private void loadItemsFromDatabase(String categoryName, int userId) {
+        Cursor cursor = dbHelper.getItemsByUserAndCategory(userId, categoryName);
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String itemName = cursor.getString(cursor.getColumnIndexOrThrow("item_name"));
                 double itemPrice = cursor.getDouble(cursor.getColumnIndexOrThrow("item_price"));
-                items.add(new Item(itemName, itemPrice));
+                items.add(new Item(itemName, itemPrice, userId));
             }
             cursor.close();
         }
     }
+
 }

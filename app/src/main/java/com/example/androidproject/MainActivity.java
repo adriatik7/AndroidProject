@@ -11,23 +11,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        int userId = getIntent().getIntExtra("user_id", -1);
 
-        // Set click listeners for each category
-        setCategoryClickListener(R.id.category1, "Food & Drinks");
-        setCategoryClickListener(R.id.category2, "Transportation");
-        setCategoryClickListener(R.id.category3, "Shopping");
-        setCategoryClickListener(R.id.category4, "Health");
-        setCategoryClickListener(R.id.category5, "Bills & Utilities");
-        setCategoryClickListener(R.id.category6, "Entertainment");
-        setCategoryClickListener(R.id.category7, "Savings & Investments");
-        setCategoryClickListener(R.id.category8, "Others");
+
+
+        setCategoryClickListener(R.id.category1, "Food & Drinks", userId);
+        setCategoryClickListener(R.id.category2, "Transportation", userId);
+        setCategoryClickListener(R.id.category3, "Shopping", userId);
+        setCategoryClickListener(R.id.category4, "Health", userId);
+        setCategoryClickListener(R.id.category5, "Bills & Utilities", userId);
+        setCategoryClickListener(R.id.category6, "Entertainment", userId);
+        setCategoryClickListener(R.id.category7, "Savings & Investments", userId);
+        setCategoryClickListener(R.id.category8, "Others", userId);
     }
 
-    private void setCategoryClickListener(int categoryId, String categoryName) {
+    private void setCategoryClickListener(int categoryId, String categoryName, int userId) {
         ImageView category = findViewById(categoryId);
         category.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
             intent.putExtra("category_name", categoryName);
+            intent.putExtra("user_id", userId);
             startActivity(intent);
         });
     }

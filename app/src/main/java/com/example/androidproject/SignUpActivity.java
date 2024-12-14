@@ -25,7 +25,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        // Initialize fields
+
         fullNameField = findViewById(R.id.fullName);
         emailField = findViewById(R.id.email);
         usernameField = findViewById(R.id.username);
@@ -34,10 +34,10 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.signUpButton);
         footerText = findViewById(R.id.footerText);
 
-        // Initialize database helper
+
         dbHelper = new DatabaseHelper(this);
 
-        // Set up sign-up button click listener
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +92,7 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        // Proceed to OTP verification
+
         Intent intent = new Intent(SignUpActivity.this, VerifyOTPActivity.class);
         intent.putExtra("fullName", fullName);
         intent.putExtra("email", email);
@@ -102,7 +102,7 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    // Helper method to validate password
+
     private boolean isValidPassword(String password) {
         boolean hasNumber = false;
         boolean hasSpecialChar = false;
@@ -120,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
         return false;
     }
 
-    // Helper method to validate email
+
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

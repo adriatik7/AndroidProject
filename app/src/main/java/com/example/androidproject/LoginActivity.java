@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize views
+
         usernameField = findViewById(R.id.username);
         passwordField = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
@@ -37,10 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         // signUpLink = findViewById(R.id.signUpLink);
         progressBar = findViewById(R.id.progressBar);
 
-        // Initialize database helper
+
         dbHelper = new DatabaseHelper(this);
 
-        // Set up login button click listener
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,12 +48,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Set up sign-up link click listener
+
         footerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to SignUpActivity
+
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+
                 startActivity(intent);
             }
         });
@@ -71,19 +72,29 @@ public class LoginActivity extends AppCompatActivity {
 
         footerText.setVisibility(View.VISIBLE);
 
-        // Authenticate user
+
         boolean isAuthenticated = dbHelper.authenticateUser(username, password);
 
         progressBar.setVisibility(View.GONE);
 
         if (isAuthenticated) {
-            Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-            // Navigate to MainActivity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+
+            int userId = dbHelper.getUserId(username);
+
+            if (userId != -1) {
+                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("user_id", userId);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, "Failed to retrieve user ID.", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

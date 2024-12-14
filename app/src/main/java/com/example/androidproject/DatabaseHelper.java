@@ -12,24 +12,25 @@ import java.security.NoSuchAlgorithmException;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SpendTracker.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
-    // Table names
+
     private static final String TABLE_USERS = "users";
     private static final String TABLE_ITEMS = "items";
 
-    // Columns for the Users table
+
     private static final String COLUMN_USER_ID = "id";
     private static final String COLUMN_FULL_NAME = "full_name";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_PASSWORD = "password";
 
-    // Columns for the Items table
+
     private static final String COLUMN_ITEM_ID = "id";
     private static final String COLUMN_ITEM_NAME = "item_name";
     private static final String COLUMN_ITEM_PRICE = "item_price";
     private static final String COLUMN_ITEM_CATEGORY = "item_category";
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create Users table
+
         String createUserTable = "CREATE TABLE " + TABLE_USERS + " (" +
                 COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_FULL_NAME + " TEXT, " +
@@ -46,28 +47,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_PASSWORD + " TEXT)";
         db.execSQL(createUserTable);
 
-        // Create Items table
+
         String createItemsTable = "CREATE TABLE " + TABLE_ITEMS + " (" +
                 COLUMN_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_ITEM_NAME + " TEXT, " +
-                COLUMN_ITEM_PRICE + " REAL, " +
-                COLUMN_ITEM_CATEGORY + " TEXT)";
+                COLUMN_ITEM_NAME + " TEXT NOT NULL, " +
+                COLUMN_ITEM_PRICE + " REAL NOT NULL, " +
+                COLUMN_ITEM_CATEGORY + " TEXT NOT NULL, " +
+                COLUMN_USER_ID + " INTEGER NOT NULL, " +
+                "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + ") " +
+                "ON DELETE CASCADE)";
         db.execSQL(createItemsTable);
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS);
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE items ADD COLUMN user_id INTEGER DEFAULT 0;");
+        }
     }
 
-    // Add a user
+
+
     public boolean addUser(String fullName, String email, String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        // Hash the password
+
         String hashedPassword = hashPassword(password);
 
         values.put(COLUMN_FULL_NAME, fullName);
@@ -99,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return null; // In case of an error
+            return null;
         }
     }
 
@@ -127,11 +133,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    // Authenticate user
+
     public boolean authenticateUser(String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Query to fetch the stored hashed password for the username
+
         Cursor cursor = db.query(TABLE_USERS,
                 new String[]{COLUMN_PASSWORD},
                 COLUMN_USERNAME + "=?",
@@ -139,35 +145,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, null, null);
 
         if (cursor.moveToFirst()) {
-            // Get the stored hashed password
+
             String storedHashedPassword = cursor.getString(0);
 
-            // Hash the entered password
+
             String enteredHashedPassword = hashPassword(password);
 
             cursor.close();
 
-            // Compare the stored hash with the hash of the entered password
+
             return storedHashedPassword.equals(enteredHashedPassword);
         }
 
         cursor.close();
-        return false; // Authentication failed
+        return false;
     }
 
 
-    // Add an item
-    public long addItem(String itemName, double price, String category) {
+
+    public long addItem(String itemName, double price, String category, int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_ITEM_NAME, itemName);
         values.put(COLUMN_ITEM_PRICE, price);
         values.put(COLUMN_ITEM_CATEGORY, category);
+        values.put("user_id", userId);
 
         return db.insert(TABLE_ITEMS, null, values);
     }
 
-    // Get items by category
+
+
     public Cursor getItemsByCategory(String category) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_ITEMS,
@@ -176,4 +184,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{category},
                 null, null, null);
     }
+
+    public Cursor getItemsByUserAndCategory(int userId, String category) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_ITEMS,
+                null,
+                "user_id=? AND item_category=?",
+                new String[]{String.valueOf(userId), category},
+                null, null, null);
+    }
+
+    public int getUserId(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id FROM users WHERE username = ?", new String[]{username});
+
+        if (cursor.moveToFirst()) {
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+            cursor.close();
+            return userId;
+        }
+
+        cursor.close();
+        return -1;
+    }
+
+
+
 }
