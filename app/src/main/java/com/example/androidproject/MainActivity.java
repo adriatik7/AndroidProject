@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         double totalSpentValue = dbHelper.getTotalSpent(userId);
 
         TextView totalSpentTextView = findViewById(R.id.totalSpent);
-        totalSpentTextView.setText(String.format("%.2f euro", totalSpentValue));
+        totalSpentTextView.setText(String.format("€%.2f", totalSpentValue));
     }
 
 }

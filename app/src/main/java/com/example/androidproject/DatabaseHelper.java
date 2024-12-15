@@ -223,6 +223,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return totalSpent;
     }
 
+    // Update item
+    public int updateItem(int itemId, String newName, double newPrice, String newCategory) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ITEM_NAME, newName);
+        values.put(COLUMN_ITEM_PRICE, newPrice);
+        values.put(COLUMN_ITEM_CATEGORY, newCategory);
+
+        return db.update(TABLE_ITEMS, values, COLUMN_ITEM_ID + "=?", new String[]{String.valueOf(itemId)});
+    }
+
+    // Delete item
+    public int deleteItem(int itemId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_ITEMS, COLUMN_ITEM_ID + "=?", new String[]{String.valueOf(itemId)});
+    }
+
+
 
 
 

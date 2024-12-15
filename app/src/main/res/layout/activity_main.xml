@@ -88,7 +88,7 @@
         android:id="@+id/category8"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/application"
+        android:src="@drawable/others"
         app:layout_constraintCircle="@id/totalSpent"
         app:layout_constraintCircleAngle="315"
         app:layout_constraintCircleRadius="150dp" />
