@@ -29,23 +29,9 @@
         <activity
             android:name=".SignUpActivity"
             android:exported="true" />
-        <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".CategoryActivity">
-
-        </activity>
-
-        <activity android:name=".VerifyOTPActivity">
-
-        </activity>
-
-
-
-
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".VerifyOTPActivity"></activity>
+        <activity android:name=".ProfileActivity"></activity>
     </application>
-
-
-
-
 </manifest>
