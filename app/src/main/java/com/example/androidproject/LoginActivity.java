@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,8 +22,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameField, passwordField;
     private Button loginButton;
+    private TextView footerText, forgotPasswordTextView;
     private ProgressBar progressBar;
-
     private DatabaseHelper dbHelper;
     private SessionManager sessionManager;
 
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         usernameField = findViewById(R.id.username);
         passwordField = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
+        footerText = findViewById(R.id.footerText);
+        forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
         progressBar = findViewById(R.id.progressBar);
 
         dbHelper = new DatabaseHelper(this);
@@ -51,6 +55,18 @@ public class LoginActivity extends AppCompatActivity {
                 handleLogin();
             }
         });
+
+        footerText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+        forgotPasswordTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void handleLogin() {
@@ -62,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        footerText.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
 
         boolean isAuthenticated = dbHelper.authenticateUser(username, password);
@@ -72,7 +89,8 @@ public class LoginActivity extends AppCompatActivity {
             if (userId != -1) {
                 sessionManager.createSession(userId);
 
-                // Show welcome notification
+
+                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
                 createNotification(username);
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
