@@ -11,35 +11,36 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidproject.DatabaseHelper;
-
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameField, passwordField;
     private Button loginButton;
-
     private TextView footerText;
-    //private TextView signUpLink;
     private ProgressBar progressBar;
 
     private DatabaseHelper dbHelper;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         usernameField = findViewById(R.id.username);
         passwordField = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
         footerText = findViewById(R.id.footerText);
-        // signUpLink = findViewById(R.id.signUpLink);
         progressBar = findViewById(R.id.progressBar);
 
-
         dbHelper = new DatabaseHelper(this);
+        sessionManager = new SessionManager(this);
 
+        // If already logged in, redirect to MainActivity
+        if (sessionManager.isLoggedIn()) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,17 +49,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         footerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-
                 startActivity(intent);
             }
         });
-
     }
 
     private void handleLogin() {
@@ -71,22 +68,19 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         footerText.setVisibility(View.VISIBLE);
-
+        progressBar.setVisibility(View.VISIBLE);
 
         boolean isAuthenticated = dbHelper.authenticateUser(username, password);
-
         progressBar.setVisibility(View.GONE);
 
         if (isAuthenticated) {
-
             int userId = dbHelper.getUserId(username);
-
             if (userId != -1) {
+
+                sessionManager.createSession(userId);
+
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-
-
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("user_id", userId);
                 startActivity(intent);
                 finish();
             } else {
@@ -96,5 +90,4 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

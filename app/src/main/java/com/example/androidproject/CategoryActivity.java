@@ -24,26 +24,27 @@ public class CategoryActivity extends AppCompatActivity {
     private List<Item> items;
     private ItemAdapter adapter;
     private DatabaseHelper dbHelper;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        int userId = getIntent().getIntExtra("user_id", -1);
-        if (userId == -1) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+        sessionManager = new SessionManager(this);
+
+
+        if (!sessionManager.isLoggedIn()) {
+            Intent loginIntent = new Intent(CategoryActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
             finish();
             return;
         }
 
+        int userId = sessionManager.getUserId();  // Retrieve userId from session
+
         ImageButton backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
         String categoryName = getIntent().getStringExtra("category_name");
         TextView categoryTitle = findViewById(R.id.categoryTitle);
@@ -74,34 +75,31 @@ public class CategoryActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String productName = productNameInput.getText().toString().trim();
-                String productPriceText = productPriceInput.getText().toString().trim();
+        addButton.setOnClickListener(v -> {
+            String productName = productNameInput.getText().toString().trim();
+            String productPriceText = productPriceInput.getText().toString().trim();
 
-                if (!productName.isEmpty() && !productPriceText.isEmpty()) {
-                    try {
-                        double productPrice = Double.parseDouble(productPriceText);
-                        long result = dbHelper.addItem(productName, productPrice, categoryName, userId);
+            if (!productName.isEmpty() && !productPriceText.isEmpty()) {
+                try {
+                    double productPrice = Double.parseDouble(productPriceText);
+                    long result = dbHelper.addItem(productName, productPrice, categoryName, userId);
 
-                        if (result != -1) {
-                            items.add(new Item((int) result, productName, productPrice, userId, categoryName));
-                            adapter.notifyDataSetChanged();
+                    if (result != -1) {
+                        items.add(new Item((int) result, productName, productPrice, userId, categoryName));
+                        adapter.notifyDataSetChanged();
 
-                            productNameInput.setText("");
-                            productPriceInput.setText("");
+                        productNameInput.setText("");
+                        productPriceInput.setText("");
 
-                            Toast.makeText(CategoryActivity.this, "Item added!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(CategoryActivity.this, "Error adding item.", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(CategoryActivity.this, "Invalid price format.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CategoryActivity.this, "Item added!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(CategoryActivity.this, "Error adding item.", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(CategoryActivity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                } catch (NumberFormatException e) {
+                    Toast.makeText(CategoryActivity.this, "Invalid price format.", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(CategoryActivity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
             }
         });
     }
