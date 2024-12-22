@@ -15,7 +15,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameField, passwordField;
     private Button loginButton;
-    private TextView footerText;
+    private TextView footerText, forgotPasswordTextView;
     private ProgressBar progressBar;
 
     private DatabaseHelper dbHelper;
@@ -30,7 +30,9 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
         footerText = findViewById(R.id.footerText);
+        forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
         progressBar = findViewById(R.id.progressBar);
+
 
         dbHelper = new DatabaseHelper(this);
         sessionManager = new SessionManager(this);
@@ -55,6 +57,11 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
+        });
+
+        forgotPasswordTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
         });
     }
 

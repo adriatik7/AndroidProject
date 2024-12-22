@@ -73,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         if (!isValidPassword(password)) {
-            Toast.makeText(this, "Password must contain at least one number and one special character.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Password must be at least 8 characters long, contain at least one number and one special character.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -106,6 +106,10 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean isValidPassword(String password) {
         boolean hasNumber = false;
         boolean hasSpecialChar = false;
+
+        if (password.length() < 8) {
+            return false;
+        }
 
         for (char c : password.toCharArray()) {
             if (Character.isDigit(c)) {
