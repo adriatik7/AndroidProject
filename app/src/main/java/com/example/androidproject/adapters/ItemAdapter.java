@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androidproject.R;
 import com.example.androidproject.model.Item;
 
 import java.util.List;

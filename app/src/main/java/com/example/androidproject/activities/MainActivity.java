@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.R;
+import com.example.androidproject.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,6 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.adapters.ItemAdapter;
+import com.example.androidproject.R;
+import com.example.androidproject.utils.SessionManager;
 import com.example.androidproject.model.Item;
 
 import java.util.ArrayList;

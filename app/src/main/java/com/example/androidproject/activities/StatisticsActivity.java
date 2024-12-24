@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.R;
+import com.example.androidproject.utils.SessionManager;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;

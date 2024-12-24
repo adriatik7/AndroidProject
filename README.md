@@ -2,18 +2,17 @@
 
 ## Overview
 
-SpendTracker is an Android application built with Java that helps users track their daily expenses efficiently. It provides various categories for expense tracking, detailed statistics, and user management features.
+- SpendTracker is an Android application built with Java that helps users track their daily expenses efficiently. It provides various categories for expense tracking, detailed statistics, and user management features.
 
 ## Key Features
 
  **User Registration**: 
 
-Users register by providing their full name, a valid email, and a password that must meet the following criteria:
-
-- Minimum 8 characters
-- At least one symbol
-- At least one number
-Once registered, an OTP is sent to the user's email for verification, ensuring a secure two-factor authentication (2FA) process.
+- Users register by providing their full name, a valid email, and a password that must meet the following criteria:
+     - Minimum 8 characters
+     - At least one symbol
+     - At least one number
+- Once registered, an OTP is sent to the user's email for verification, ensuring a secure two-factor authentication (2FA) process.
 
  **2FA Implementation**:
  
@@ -48,8 +47,8 @@ Once registered, an OTP is sent to the user's email for verification, ensuring a
     - Health
     - Shopping
     - Savings & Investment
-    - Others
-      The app calculates the total expenses for each category, and these totals are displayed on the MainActivity.
+    - Others 
+- The app calculates the total expenses for each category, and these totals are displayed on the MainActivity.
 
  **MainActivity**:
 

@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.utils.OTPSender;
+import com.example.androidproject.R;
 
 import java.security.SecureRandom;
 

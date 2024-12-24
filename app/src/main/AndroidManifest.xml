@@ -19,7 +19,7 @@
         android:theme="@style/Theme.AndroidProject"
         tools:targetApi="31">
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".activities.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,19 +27,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
+        <activity android:name=".activities.LoginActivity"
                   android:exported="true"/>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".activities.SignUpActivity"
             android:exported="true" />
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".CategoryActivity"></activity>
-        <activity android:name=".VerifyOTPActivity"></activity>
-        <activity android:name=".ProfileActivity"></activity>
-        <activity android:name=".ForgotPasswordActivity"></activity>
-        <activity android:name=".VerifyForgotPasswordOTPActivity"></activity>
-        <activity android:name=".ResetPasswordActivity"></activity>
-        <activity android:name=".StatisticsActivity"></activity>
+        <activity android:name=".activities.MainActivity"></activity>
+        <activity android:name=".activities.CategoryActivity"></activity>
+        <activity android:name=".activities.VerifyOTPActivity"></activity>
+        <activity android:name=".activities.ProfileActivity"></activity>
+        <activity android:name=".activities.ForgotPasswordActivity"></activity>
+        <activity android:name=".activities.VerifyForgotPasswordOTPActivity"></activity>
+        <activity android:name=".activities.ResetPasswordActivity"></activity>
+        <activity android:name=".activities.StatisticsActivity"></activity>
 
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.activities;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,9 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.R;
+import com.example.androidproject.utils.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 

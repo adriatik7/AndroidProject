@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,6 +11,9 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.R;
+import com.example.androidproject.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
