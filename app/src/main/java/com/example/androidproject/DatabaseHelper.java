@@ -268,6 +268,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, new String[]{String.valueOf(userId)});
     }
 
+    public Cursor rankCategoriesByTotalPrice(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT " + COLUMN_ITEM_CATEGORY + ", SUM(" + COLUMN_ITEM_PRICE + ") AS total_price " +
+                "FROM " + TABLE_ITEMS +
+                " WHERE user_id = ? " +
+                "GROUP BY " + COLUMN_ITEM_CATEGORY +
+                " ORDER BY total_price DESC";
+
+        return db.rawQuery(query, new String[]{String.valueOf(userId)});
+    }
+
+    public Cursor getTotalPriceByCategory(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_ITEM_CATEGORY + ", SUM(" + COLUMN_ITEM_PRICE + ") AS total " +
+                "FROM " + TABLE_ITEMS +
+                " WHERE user_id = ? " +
+                "GROUP BY " + COLUMN_ITEM_CATEGORY +
+                " ORDER BY total DESC";
+        return db.rawQuery(query, new String[]{String.valueOf(userId)});
+    }
+
+
+
 
 
 }
