@@ -8,7 +8,14 @@
     android:background="#1A1A1A"
     tools:context=".ProfileActivity">
 
-    <!-- Profile Picture -->
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/header_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
     <ImageView
         android:id="@+id/ivProfilePicture"
         android:layout_width="120dp"
@@ -16,11 +23,11 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/circle_background"
         android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Full Name -->
+
     <TextView
         android:id="@+id/tvFullName"
         android:layout_width="wrap_content"
@@ -34,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Email -->
+
     <TextView
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
@@ -47,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Username -->
+
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
@@ -60,7 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Log Out Button -->
+
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
@@ -74,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 
-    <!-- Bottom Navigation -->
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
