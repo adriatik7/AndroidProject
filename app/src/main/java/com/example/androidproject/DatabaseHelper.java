@@ -260,11 +260,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
-
-
-
-
-
+    public Cursor getTop5HighestPricedItems(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_ITEMS +
+                " WHERE user_id = ? " +
+                " ORDER BY " + COLUMN_ITEM_PRICE + " DESC LIMIT 5";
+        return db.rawQuery(query, new String[]{String.valueOf(userId)});
+    }
 
 
 

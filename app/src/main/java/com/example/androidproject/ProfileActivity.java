@@ -64,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
-        bottomNavigation.setSelectedItemId(R.id.nav_profile);
+
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -72,6 +72,10 @@ public class ProfileActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_main) {
                     Intent mainIntent = new Intent(ProfileActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    return true;
+                } else if (itemId == R.id.nav_stats){
+                    Intent mainIntent = new Intent(ProfileActivity.this, StatisticsActivity.class);
                     startActivity(mainIntent);
                     return true;
                 } else if (itemId == R.id.nav_profile) {
