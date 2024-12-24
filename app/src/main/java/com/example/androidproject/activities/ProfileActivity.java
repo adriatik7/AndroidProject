@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
+import android.view.MenuInflater;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView tvFullName, tvEmail, tvUsername;
     private ImageView ivProfilePicture;
     private Button btnLogout;
+    private ImageView ivSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-
         if (!sessionManager.isLoggedIn()) {
             Intent loginIntent = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(loginIntent);
@@ -39,11 +41,13 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
+
         ivProfilePicture = findViewById(R.id.ivProfilePicture);
         tvFullName = findViewById(R.id.tvFullName);
         tvEmail = findViewById(R.id.tvEmail);
         tvUsername = findViewById(R.id.tvUsername);
         btnLogout = findViewById(R.id.btnLogout);
+        ivSettings = findViewById(R.id.ivSettings);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -63,29 +67,46 @@ public class ProfileActivity extends AppCompatActivity {
 
         cursor.close();
 
+
+        ivSettings.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(ProfileActivity.this, v);
+            MenuInflater inflater = popupMenu.getMenuInflater();
+            inflater.inflate(R.menu.menu_settings, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.menu_change_username) {
+                    Intent usernameIntent = new Intent(ProfileActivity.this, ChangeUsernameActivity.class);
+                    startActivity(usernameIntent);
+                    return true;
+                } else if (item.getItemId() == R.id.menu_change_password) {
+                    Intent passwordIntent = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
+                    startActivity(passwordIntent);
+                    return true;
+                }
+                return false;
+            });
+
+            popupMenu.show();
+        });
+
         ivProfilePicture.setImageResource(R.drawable.default_profile_picture);
 
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
-
-
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.nav_main) {
-                    Intent mainIntent = new Intent(ProfileActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
-                    return true;
-                } else if (itemId == R.id.nav_stats){
-                    Intent mainIntent = new Intent(ProfileActivity.this, StatisticsActivity.class);
-                    startActivity(mainIntent);
-                    return true;
-                } else if (itemId == R.id.nav_profile) {
-                    return true;
-                }
-                return false;
+        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_main) {
+                Intent mainIntent = new Intent(ProfileActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                return true;
+            } else if (itemId == R.id.nav_stats) {
+                Intent statsIntent = new Intent(ProfileActivity.this, StatisticsActivity.class);
+                startActivity(statsIntent);
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                return true;
             }
+            return false;
         });
 
 

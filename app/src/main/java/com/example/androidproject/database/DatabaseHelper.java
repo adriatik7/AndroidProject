@@ -260,6 +260,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    public boolean changePassword(int userId, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PASSWORD, hashPassword(newPassword));
+
+        // Correct method call
+        int rowsAffected = db.update(TABLE_USERS, values, COLUMN_USER_ID + "=?", new String[]{String.valueOf(userId)});
+        return rowsAffected > 0;
+    }
+
+
+    public boolean updateUsername(int userId, String newUsername) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, newUsername);
+
+        try {
+            int rowsAffected = db.update(TABLE_USERS, values, COLUMN_USER_ID + "=?", new String[]{String.valueOf(userId)});
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error updating username: " + e.getMessage());
+            return false;
+        }
+    }
+
+
     public Cursor getTop5HighestPricedItems(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_ITEMS +
@@ -289,9 +315,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " ORDER BY total DESC";
         return db.rawQuery(query, new String[]{String.valueOf(userId)});
     }
-
-
-
-
-
 }
