@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.androidproject.database.DatabaseHelper;
 import com.example.androidproject.R;
+import com.example.androidproject.utils.MyMarkerView;
 import com.example.androidproject.utils.SessionManager;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -22,7 +23,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -123,7 +123,7 @@ public class StatisticsActivity extends AppCompatActivity {
         categoryBarChart.setData(data);
 
         categoryBarChart.getDescription().setEnabled(false);
-        categoryBarChart.setHighlightPerTapEnabled(true); // Enable bar highlighting on tap
+        categoryBarChart.setHighlightPerTapEnabled(true);
 
         // Configure X-Axis
         XAxis xAxis = categoryBarChart.getXAxis();

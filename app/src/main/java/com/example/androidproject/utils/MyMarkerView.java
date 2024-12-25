@@ -1,4 +1,4 @@
-package com.example.androidproject.activities;
+package com.example.androidproject.utils;
 
 import android.content.Context;
 import android.widget.TextView;
@@ -25,7 +25,7 @@ public class MyMarkerView extends MarkerView {
     public void refreshContent(Entry e, Highlight highlight) {
         int index = (int) e.getX();
         if (index >= 0 && index < categories.size()) {
-            markerTextView.setText(categories.get(index)); // Display the category name
+            markerTextView.setText(categories.get(index));
         }
         super.refreshContent(e, highlight);
     }
