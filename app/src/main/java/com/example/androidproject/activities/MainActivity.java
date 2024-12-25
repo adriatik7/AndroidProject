@@ -3,6 +3,7 @@ package com.example.androidproject.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,10 +60,12 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_profile) {
                     Intent mainIntent = new Intent(MainActivity.this, ProfileActivity.class);
                     startActivity(mainIntent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
                 } else if (itemId == R.id.nav_stats){
                     Intent mainIntent = new Intent(MainActivity.this, StatisticsActivity.class);
                     startActivity(mainIntent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
                 } else if (itemId == R.id.nav_main) {
                     return true;
@@ -75,11 +78,13 @@ public class MainActivity extends AppCompatActivity {
     private void setCategoryClickListener(int categoryId, String categoryName) {
         ImageView category = findViewById(categoryId);
         category.setOnClickListener(view -> {
+            view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.click_bounce));
             Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
             intent.putExtra("category_name", categoryName);
             startActivity(intent);
         });
     }
+
 
     @Override
     protected void onResume() {

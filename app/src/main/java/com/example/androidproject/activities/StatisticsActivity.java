@@ -63,10 +63,12 @@ public class StatisticsActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_main) {
                     Intent mainIntent = new Intent(StatisticsActivity.this, MainActivity.class);
                     startActivity(mainIntent);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                     return true;
                 } else if (itemId == R.id.nav_profile) {
                     Intent profileIntent = new Intent(StatisticsActivity.this, ProfileActivity.class);
                     startActivity(profileIntent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
                 } else if (itemId == R.id.nav_stats) {
                     return true;

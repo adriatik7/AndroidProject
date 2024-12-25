@@ -98,10 +98,12 @@ public class ProfileActivity extends AppCompatActivity {
             if (itemId == R.id.nav_main) {
                 Intent mainIntent = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(mainIntent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
             } else if (itemId == R.id.nav_stats) {
                 Intent statsIntent = new Intent(ProfileActivity.this, StatisticsActivity.class);
                 startActivity(statsIntent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
             } else if (itemId == R.id.nav_profile) {
                 return true;

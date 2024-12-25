@@ -48,7 +48,11 @@ public class CategoryActivity extends AppCompatActivity {
         int userId = sessionManager.getUserId();  // Retrieve userId from session
 
         ImageButton backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> finish());
+        backButton.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
+
 
         String categoryName = getIntent().getStringExtra("category_name");
         TextView categoryTitle = findViewById(R.id.categoryTitle);
@@ -80,6 +84,9 @@ public class CategoryActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         addButton.setOnClickListener(v -> {
+
+            v.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.button_bounce));
+
             String productName = productNameInput.getText().toString().trim();
             String productPriceText = productPriceInput.getText().toString().trim();
 
