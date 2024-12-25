@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
 import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.repository.UserRepository;
 import com.example.androidproject.utils.SessionManager;
 
 public class ChangeUsernameActivity extends AppCompatActivity {
@@ -19,6 +20,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
     private SessionManager sessionManager;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         // Initialize database helper and session manager
         dbHelper = new DatabaseHelper(this);
         sessionManager = new SessionManager(this);
+        userRepository = new UserRepository(this);
 
         // Set change username button click listener
         changeUsernameButton.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +62,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         }
 
         // Update username in database
-        boolean isUsernameUpdated = dbHelper.updateUsername(userId, newUsername);
+        boolean isUsernameUpdated = userRepository.updateUsername(userId, newUsername);
 
         if (isUsernameUpdated) {
             Toast.makeText(this, "Username changed successfully!", Toast.LENGTH_SHORT).show();

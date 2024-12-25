@@ -12,11 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.database.DatabaseHelper;
 import com.example.androidproject.R;
+import com.example.androidproject.repository.StatisticsRepository;
+import com.example.androidproject.repository.UserRepository;
 import com.example.androidproject.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private SessionManager sessionManager;
+    private StatisticsRepository statisticsRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sessionManager = new SessionManager(this);
+        statisticsRepository = new StatisticsRepository(this);
 
 
         if (!sessionManager.isLoggedIn()) {
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         int userId = sessionManager.getUserId();
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        double totalSpentValue = dbHelper.getTotalSpent(userId);
+        double totalSpentValue = statisticsRepository.getTotalSpent(userId);
 
         TextView totalSpentTextView = findViewById(R.id.totalSpent);
         totalSpentTextView.setText(String.format("%.2f €", totalSpentValue));
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         int userId = sessionManager.getUserId();
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        double totalSpentValue = dbHelper.getTotalSpent(userId);
+        double totalSpentValue = statisticsRepository.getTotalSpent(userId);
 
         TextView totalSpentTextView = findViewById(R.id.totalSpent);
         totalSpentTextView.setText(String.format("€%.2f", totalSpentValue));

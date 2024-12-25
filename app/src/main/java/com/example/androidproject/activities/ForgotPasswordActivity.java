@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.database.DatabaseHelper;
 import com.example.androidproject.R;
+import com.example.androidproject.repository.UserRepository;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -21,6 +22,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private DatabaseHelper dbHelper;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         dbHelper = new DatabaseHelper(this);
+        userRepository = new UserRepository(this);
 
         resetButton.setOnClickListener(v -> handlePasswordReset());
     }
@@ -46,7 +49,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        boolean isEmailExists = dbHelper.isEmailRegistered(email);
+        boolean isEmailExists = userRepository.isEmailExists(email);
 
         progressBar.setVisibility(View.GONE);
 

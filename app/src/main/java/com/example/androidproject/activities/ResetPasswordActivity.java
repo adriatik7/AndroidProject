@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.database.DatabaseHelper;
 import com.example.androidproject.R;
+import com.example.androidproject.repository.UserRepository;
 
 public class ResetPasswordActivity extends AppCompatActivity {
     private EditText newPasswordEditText, confirmPasswordEditText;
     private Button resetPasswordButton;
     private DatabaseHelper dbHelper;
     private String email;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
         resetPasswordButton = findViewById(R.id.resetPasswordButton);
         dbHelper = new DatabaseHelper(this);
+        userRepository = new UserRepository(this);
 
         email = getIntent().getStringExtra("email");
 
@@ -48,7 +51,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 return;
             }
 
-            if (dbHelper.updatePassword(email, newPassword)) {
+            if (userRepository.updatePassword(email, newPassword)) {
                 Toast.makeText(this, "Password updated successfully.", Toast.LENGTH_SHORT).show();
                 finish();
             } else {

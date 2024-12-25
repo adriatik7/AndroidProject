@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.database.DatabaseHelper;
 import com.example.androidproject.R;
+import com.example.androidproject.repository.UserRepository;
 import com.example.androidproject.utils.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
@@ -29,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private DatabaseHelper dbHelper;
     private SessionManager sessionManager;
+
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
         sessionManager = new SessionManager(this);
+        userRepository = new UserRepository(this);
 
         // If already logged in, redirect to MainActivity
         if (sessionManager.isLoggedIn()) {
@@ -84,11 +88,11 @@ public class LoginActivity extends AppCompatActivity {
         footerText.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
 
-        boolean isAuthenticated = dbHelper.authenticateUser(username, password);
+        boolean isAuthenticated = userRepository.authenticateUser(username, password);
         progressBar.setVisibility(View.GONE);
 
         if (isAuthenticated) {
-            int userId = dbHelper.getUserId(username);
+            int userId = userRepository.getUserId(username);
             if (userId != -1) {
                 sessionManager.createSession(userId);
 

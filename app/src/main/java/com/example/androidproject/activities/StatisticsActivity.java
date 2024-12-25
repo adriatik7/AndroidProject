@@ -8,7 +8,8 @@ import android.widget.TextView;
 
 import com.example.androidproject.database.DatabaseHelper;
 import com.example.androidproject.R;
-import com.example.androidproject.utils.MyMarkerView;
+import com.example.androidproject.repository.StatisticsRepository;
+import com.example.androidproject.utils.CategoryMarker;
 import com.example.androidproject.utils.SessionManager;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -33,6 +34,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private SessionManager sessionManager;
     private TextView topItemsTextView;
     private BarChart categoryBarChart;
+    private StatisticsRepository statisticsRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class StatisticsActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         topItemsTextView = findViewById(R.id.top_items_text_view);
         categoryBarChart = findViewById(R.id.category_bar_chart);
+
+        statisticsRepository = new StatisticsRepository(this);
 
         // Get the user ID from the session
         int userId = sessionManager.getUserId();
@@ -79,7 +83,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void displayTop5HighestPricedItems(int userId) {
-        Cursor cursor = dbHelper.getTop5HighestPricedItems(userId);
+        Cursor cursor = statisticsRepository.getTop5HighestPricedItems(userId);
         StringBuilder topItems = new StringBuilder("Top 5 Highest Priced Items:\n\n");
 
         if (cursor.moveToFirst()) {
@@ -97,7 +101,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void displayCategoryRanking(int userId) {
-        Cursor cursor = dbHelper.getTotalPriceByCategory(userId);
+        Cursor cursor = statisticsRepository.getTotalPriceByCategory(userId);
 
         ArrayList<BarEntry> entries = new ArrayList<>();
         ArrayList<String> categories = new ArrayList<>();
@@ -148,7 +152,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
 
         // Add a MarkerView for tooltips
-        MyMarkerView markerView = new MyMarkerView(this, R.layout.marker_view, categories);
+        CategoryMarker markerView = new CategoryMarker(this, R.layout.marker_view, categories);
         categoryBarChart.setMarker(markerView);
 
         categoryBarChart.invalidate();

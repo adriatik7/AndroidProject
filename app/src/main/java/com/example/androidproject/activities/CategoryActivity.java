@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidproject.database.DatabaseHelper;
 import com.example.androidproject.adapters.ItemAdapter;
 import com.example.androidproject.R;
+import com.example.androidproject.repository.ItemsRepository;
 import com.example.androidproject.utils.SessionManager;
 import com.example.androidproject.model.Item;
 
@@ -29,6 +30,7 @@ public class CategoryActivity extends AppCompatActivity {
     private ItemAdapter adapter;
     private DatabaseHelper dbHelper;
     private SessionManager sessionManager;
+    private ItemsRepository itemsRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         sessionManager = new SessionManager(this);
+        itemsRepository = new ItemsRepository(this);
 
 
         if (!sessionManager.isLoggedIn()) {
@@ -93,7 +96,7 @@ public class CategoryActivity extends AppCompatActivity {
             if (!productName.isEmpty() && !productPriceText.isEmpty()) {
                 try {
                     double productPrice = Double.parseDouble(productPriceText);
-                    long result = dbHelper.addItem(productName, productPrice, categoryName, userId);
+                    long result = itemsRepository.addItem(productName, productPrice, categoryName, userId);
 
                     if (result != -1) {
                         items.add(new Item((int) result, productName, productPrice, userId, categoryName));
@@ -117,7 +120,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void loadItemsFromDatabase(String categoryName, int userId) {
         items.clear();
-        Cursor cursor = dbHelper.getItemsByUserAndCategory(userId, categoryName);
+        Cursor cursor = itemsRepository.getItemsByUserAndCategory(userId, categoryName);
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 int itemId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
@@ -157,7 +160,7 @@ public class CategoryActivity extends AppCompatActivity {
                         return;
                     }
 
-                    dbHelper.updateItem(item.getId(), newName, newPrice, item.getCategory());
+                    itemsRepository.updateItem(item.getId(), newName, newPrice, item.getCategory());
                     loadItemsFromDatabase(item.getCategory(), item.getUserId());
                     adapter.notifyDataSetChanged();
                 })
@@ -171,7 +174,7 @@ public class CategoryActivity extends AppCompatActivity {
                 .setTitle("Delete Item")
                 .setMessage("Are you sure you want to delete this item?")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    dbHelper.deleteItem(item.getId());
+                    itemsRepository.deleteItem(item.getId());
                     items.remove(item);
                     adapter.notifyDataSetChanged();
                     Toast.makeText(this, "Item deleted.", Toast.LENGTH_SHORT).show();

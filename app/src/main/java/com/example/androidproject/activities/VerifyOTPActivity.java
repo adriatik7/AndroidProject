@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.repository.UserRepository;
 import com.example.androidproject.utils.OTPSender;
 import com.example.androidproject.R;
 
@@ -20,6 +21,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
     private EditText otpEditText;
     private String generatedOtp, fullName, username, email, password;
     private DatabaseHelper dbHelper;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
         Button verifyButton = findViewById(R.id.verifyButton);
         Button resendButton = findViewById(R.id.resendButton);
         dbHelper = new DatabaseHelper(this);
+        userRepository = new UserRepository(this);
 
         // Get data from Intent
         fullName = getIntent().getStringExtra("fullName");
@@ -63,7 +66,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
         if (enteredOtp.equals(generatedOtp)) {
             // Insert user into the database
-            if (dbHelper.addUser(fullName, email, username, password)) {
+            if (userRepository.addUser(fullName, email, username, password)) {
                 Toast.makeText(this, "OTP verified successfully. Your account is now created.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(VerifyOTPActivity.this, LoginActivity.class);
                 startActivity(intent);

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.database.DatabaseHelper;
 import com.example.androidproject.R;
+import com.example.androidproject.repository.UserRepository;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -20,6 +21,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     private TextView footerText;
     private DatabaseHelper dbHelper;
+
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         dbHelper = new DatabaseHelper(this);
+        userRepository = new UserRepository(this);
 
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -83,15 +87,16 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        if (dbHelper.isUsernameExists(username)) {
+        if (userRepository.isUsernameExists(username)) {
             Toast.makeText(this, "Username already exists. Please choose another.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (dbHelper.isEmailExists(email)) {
+        if (userRepository.isEmailExists(email)) {
             Toast.makeText(this, "Email already exists. Please use another.", Toast.LENGTH_SHORT).show();
             return;
         }
+
 
 
         Intent intent = new Intent(SignUpActivity.this, VerifyOTPActivity.class);

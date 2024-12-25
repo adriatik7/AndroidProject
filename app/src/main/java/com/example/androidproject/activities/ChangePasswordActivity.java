@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidproject.R;
 import com.example.androidproject.database.DatabaseHelper;
+import com.example.androidproject.repository.UserRepository;
 import com.example.androidproject.utils.SessionManager;
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -19,6 +20,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
     private SessionManager sessionManager;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
         sessionManager = new SessionManager(this);
+        userRepository = new UserRepository(this);
 
 
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +69,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
 
         // Update password in database
-        boolean isPasswordUpdated = dbHelper.changePassword(userId, newPassword);
+        boolean isPasswordUpdated = userRepository.changePassword(userId, newPassword);
 
         if (isPasswordUpdated) {
             Toast.makeText(this, "Password changed successfully!", Toast.LENGTH_SHORT).show();

@@ -11,11 +11,11 @@ import com.github.mikephil.charting.utils.MPPointF;
 
 import java.util.ArrayList;
 
-public class MyMarkerView extends MarkerView {
+public class CategoryMarker extends MarkerView {
     private final TextView markerTextView;
     private final ArrayList<String> categories;
 
-    public MyMarkerView(Context context, int layoutResource, ArrayList<String> categories) {
+    public CategoryMarker(Context context, int layoutResource, ArrayList<String> categories) {
         super(context, layoutResource);
         this.categories = categories;
         markerTextView = findViewById(R.id.marker_text);
