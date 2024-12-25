@@ -85,6 +85,11 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        if (!isValidPassword(password)) {
+            Toast.makeText(this, "Password must be at least 8 characters long, contain at least one number and one special character.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         footerText.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -139,5 +144,25 @@ public class LoginActivity extends AppCompatActivity {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(1, builder.build());
+    }
+    private boolean isValidPassword(String password) {
+        boolean hasNumber = false;
+        boolean hasSpecialChar = false;
+
+        if (password.length() < 8) {
+            return false;
+        }
+
+        for (char c : password.toCharArray()) {
+            if (Character.isDigit(c)) {
+                hasNumber = true;
+            } else if (!Character.isLetterOrDigit(c)) {
+                hasSpecialChar = true;
+            }
+            if (hasNumber && hasSpecialChar) {
+                return true;
+            }
+        }
+        return false;
     }
 }

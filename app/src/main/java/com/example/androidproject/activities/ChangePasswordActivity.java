@@ -56,6 +56,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return;
         }
 
+        if (!isValidPassword(newPassword)) {
+            Toast.makeText(this, "Password must be at least 8 characters long, contain at least one number and one special character.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (!newPassword.equals(confirmPassword)) {
             Toast.makeText(this, "New password and confirm password do not match.", Toast.LENGTH_SHORT).show();
             return;
@@ -77,5 +82,26 @@ public class ChangePasswordActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Failed to update password. Try again.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean isValidPassword(String password) {
+        boolean hasNumber = false;
+        boolean hasSpecialChar = false;
+
+        if (password.length() < 8) {
+            return false;
+        }
+
+        for (char c : password.toCharArray()) {
+            if (Character.isDigit(c)) {
+                hasNumber = true;
+            } else if (!Character.isLetterOrDigit(c)) {
+                hasSpecialChar = true;
+            }
+            if (hasNumber && hasSpecialChar) {
+                return true;
+            }
+        }
+        return false;
     }
 }
