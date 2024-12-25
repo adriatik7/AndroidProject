@@ -18,9 +18,11 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -112,30 +114,43 @@ public class StatisticsActivity extends AppCompatActivity {
 
         BarDataSet dataSet = new BarDataSet(entries, "Categories");
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+
+        dataSet.setValueTextColor(getResources().getColor(android.R.color.white));
+        dataSet.setValueTextSize(12f);
+
         BarData data = new BarData(dataSet);
-
         categoryBarChart.setData(data);
-        categoryBarChart.getDescription().setEnabled(false);
 
+        categoryBarChart.getDescription().setEnabled(false);
+        categoryBarChart.setHighlightPerTapEnabled(true); // Enable bar highlighting on tap
+
+        // Configure X-Axis
         XAxis xAxis = categoryBarChart.getXAxis();
         xAxis.setGranularity(1f);
-
-        YAxis yAxisLeft = categoryBarChart.getAxisLeft();
-        yAxisLeft.setTextColor(getResources().getColor(android.R.color.white));
-        yAxisLeft.setTextSize(12f);
-
-        YAxis yAxisRight = categoryBarChart.getAxisRight();
-        yAxisRight.setEnabled(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return categories.get((int) value);
+                return "";
             }
         });
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(getResources().getColor(android.R.color.white)); // Set X-axis text color to white
-        xAxis.setTextSize(12f);
+
+
+        YAxis leftAxis = categoryBarChart.getAxisLeft();
+        leftAxis.setTextColor(getResources().getColor(android.R.color.white));
+        YAxis rightAxis = categoryBarChart.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        categoryBarChart.getLegend().setTextColor(getResources().getColor(android.R.color.white));
+
+
+        // Add a MarkerView for tooltips
+        MyMarkerView markerView = new MyMarkerView(this, R.layout.marker_view, categories);
+        categoryBarChart.setMarker(markerView);
 
         categoryBarChart.invalidate();
     }
+
+
 }
