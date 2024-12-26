@@ -57,26 +57,25 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
 
 
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.nav_profile) {
-                    Intent mainIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                    startActivity(mainIntent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    return true;
-                } else if (itemId == R.id.nav_stats){
-                    Intent mainIntent = new Intent(MainActivity.this, StatisticsActivity.class);
-                    startActivity(mainIntent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    return true;
-                } else if (itemId == R.id.nav_main) {
-                    return true;
-                }
-                return false;
+        bottomNavigation.setSelectedItemId(R.id.nav_main);
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_profile) {
+                Intent mainIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(mainIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            } else if (itemId == R.id.nav_stats) {
+                Intent mainIntent = new Intent(MainActivity.this, StatisticsActivity.class);
+                startActivity(mainIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            } else if (itemId == R.id.nav_main) {
+                return true;
             }
+            return false;
         });
+
     }
 
     private void setCategoryClickListener(int categoryId, String categoryName) {

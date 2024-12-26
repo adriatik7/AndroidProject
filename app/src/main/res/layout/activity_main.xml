@@ -110,8 +110,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:backgroundTint="#1A1A1A"
-    app:itemIconTint="@android:color/white"
-    app:itemTextColor="@android:color/white"
-    app:menu="@menu/bottom_navigation_menu" />
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

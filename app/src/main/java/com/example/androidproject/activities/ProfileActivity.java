@@ -93,7 +93,8 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
-        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+        bottomNavigation.setSelectedItemId(R.id.nav_profile);
+        bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_main) {
                 Intent mainIntent = new Intent(ProfileActivity.this, MainActivity.class);
@@ -110,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
             return false;
         });
+
 
 
         btnLogout.setOnClickListener(v -> {

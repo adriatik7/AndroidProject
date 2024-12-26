@@ -59,27 +59,26 @@ public class StatisticsActivity extends AppCompatActivity {
         }
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
+        bottomNavigation.setSelectedItemId(R.id.nav_stats);
 
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.nav_main) {
-                    Intent mainIntent = new Intent(StatisticsActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
-                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                    return true;
-                } else if (itemId == R.id.nav_profile) {
-                    Intent profileIntent = new Intent(StatisticsActivity.this, ProfileActivity.class);
-                    startActivity(profileIntent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    return true;
-                } else if (itemId == R.id.nav_stats) {
-                    return true;
-                }
-                return false;
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_main) {
+                Intent mainIntent = new Intent(StatisticsActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                Intent profileIntent = new Intent(StatisticsActivity.this, ProfileActivity.class);
+                startActivity(profileIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            } else if (itemId == R.id.nav_stats) {
+                return true;
             }
+            return false;
         });
+
     }
 
     private void displayTop5HighestPricedItems(int userId) {
@@ -90,7 +89,7 @@ public class StatisticsActivity extends AppCompatActivity {
             do {
                 String itemName = cursor.getString(cursor.getColumnIndexOrThrow("item_name"));
                 double itemPrice = cursor.getDouble(cursor.getColumnIndexOrThrow("item_price"));
-                topItems.append(itemName).append(" - $").append(itemPrice).append("\n");
+                topItems.append(itemName).append(" - €").append(itemPrice).append("\n");
             } while (cursor.moveToNext());
         } else {
             topItems.append("No items found.");
